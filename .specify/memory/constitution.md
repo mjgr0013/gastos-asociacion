@@ -1,22 +1,15 @@
-# Constitución del Proyecto: Stack Symfony + Docker
+# Constitución del Proyecto: Boardgame Expenses (Frontend Estático)
 
-## 1. Principios Técnicos y Stack
-- **Lenguaje:** PHP 8.3+ con tipado estricto (`declare(strict_types=1);` obligatorio en todos los archivos).
-- **Framework:** Symfony 7.x (estructura estándar, sin bundles obsoletos).
-- **Entorno de ejecución:** Docker y Docker Compose exclusivamente.
-  - Servidor web/PHP: Contenedor con FrankenPHP (o PHP-FPM + Caddy/Nginx).
-  - Base de datos: PostgreSQL 16 (o MySQL 8) en su propio contenedor.
-  - No se ejecuta Composer ni PHP en la máquina local del desarrollador; todo corre dentro de contenedores (`docker compose exec ...`).
+## 1. Stack Técnico y Alojamiento
+- **Naturaleza:** Aplicación web cliente pura (SPA estática) sin dependencias de servidor ni base de datos externa.
+- **Tecnologías:** HTML5, CSS moderno (o Tailwind CSS) y JavaScript moderno (ES Modules) o TypeScript.
+- **Persistencia:** Exclusivamente en `localStorage` del navegador para conservar la sesión actual ante recargas.
+- **Despliegue:** 100% compatible con GitHub Pages (sin backend ni procesos server-side).
 
-## 2. Calidad de Código y Estándares
-- Cumplimiento de **PSR-12** y estándares de Symfony.
-- Arquitectura limpia: Servicios desacoplados, controladores delgados (*thin controllers*), inyección de dependencias estricta.
-- Manejo de migraciones con Doctrine Migrations.
+## 2. Arquitectura y Calidad
+- Modularidad: Separación clara entre la capa de estado/lógica de negocio (cálculo de totales, gestión de participantes) y la capa de renderizado visual (DOM/UI).
+- Accesible desde móvil y escritorio con diseño responsive (para apuntar consumiciones desde el teléfono mientras se juega).
+- Código limpio, legible y documentado.
 
-## 3. Pruebas y Verificación
-- Tests unitarios y de integración con **PHPUnit**.
-- Cada endpoint o servicio de dominio debe contar con un test que valide los casos de éxito y de error.
-
-## 4. Flujo de Trabajo
-- Todo cambio en el sistema debe derivar de una especificación en `specs/`.
-- La IA nunca generará código sin que exista previamente un `plan.md` y un `tasks.md` aprobados.
+## 3. Flujo de Trabajo SDD
+- Los cambios respetan el ciclo de Spec Kit: `spec.md` -> `plan.md` -> `tasks.md` -> `implement`.
