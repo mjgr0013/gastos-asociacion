@@ -15,10 +15,10 @@
 
 **Purpose**: Project initialization, toolchain configuration, and baseline application shell.
 
-- [ ] T001 Initialize npm configuration with scripts (`dev`, `build`, `test`, `preview`) and devDependencies (`vite`, `typescript`, `vitest`) in `package.json`
-- [ ] T002 [P] Configure strict TypeScript compiler options in `tsconfig.json`
-- [ ] T003 [P] Configure Vite bundler with relative base path (`base: './'`) for GitHub Pages in `vite.config.ts`
-- [ ] T004 [P] Create initial HTML entry shell with mobile viewport meta tag, title, and application mount container in `index.html`
+- [X] T001 Initialize npm configuration with scripts (`dev`, `build`, `test`, `preview`) and devDependencies (`vite`, `typescript`, `vitest`) in `package.json`
+- [X] T002 [P] Configure strict TypeScript compiler options in `tsconfig.json`
+- [X] T003 [P] Configure Vite bundler with relative base path (`base: './'`) for GitHub Pages in `vite.config.ts`
+- [X] T004 [P] Create initial HTML entry shell with mobile viewport meta tag, title, and application mount container in `index.html`
 
 ---
 
@@ -28,12 +28,12 @@
 
 **⚠️ CRITICAL**: No user story work can begin until this phase is complete.
 
-- [ ] T005 [P] Implement domain models and interfaces (`Participant`, `ConsumptionItem`, `SessionState`, `QuickCatalogPreset`) in `src/domain/models.ts`
-- [ ] T006 [P] Implement input validation functions quoting data constraints verbatim (participant name: non-empty trimmed max 50 chars; consumption name: non-empty trimmed max 80 chars; unitPrice: number strictly > 0; quantity: integer >= 1) in `src/domain/validation.ts`
-- [ ] T007 [P] Implement currency calculation and formatting utilities (`roundCurrency` with epsilon handling, `formatCurrency` in EUR, `calculateSubtotal`, `calculateGrandTotal`) in `src/domain/calculations.ts`
-- [ ] T008 [P] Implement localStorage persistence adapter with quota/security error handling and in-memory fallback in `src/storage/local-storage.ts`
-- [ ] T009 Implement observable `SessionStore` fulfilling `ISessionStore` contract with listener subscription and mutation dispatch in `src/storage/store.ts`
-- [ ] T010 [P] Implement design tokens, color palette, typography, and base CSS reset in `src/ui/styles/variables.css`
+- [X] T005 [P] Implement domain models and interfaces (`Participant`, `ConsumptionItem`, `SessionState`, `QuickCatalogPreset`) in `src/domain/models.ts`
+- [X] T006 [P] Implement input validation functions quoting data constraints verbatim (participant name: non-empty trimmed max 50 chars; consumption name: non-empty trimmed max 80 chars; unitPrice: number strictly > 0; quantity: integer >= 1) in `src/domain/validation.ts`
+- [X] T007 [P] Implement currency calculation and formatting utilities (`roundCurrency` with epsilon handling, `formatCurrency` in EUR, `calculateSubtotal`, `calculateGrandTotal`) in `src/domain/calculations.ts`
+- [X] T008 [P] Implement localStorage persistence adapter with quota/security error handling and in-memory fallback in `src/storage/local-storage.ts`
+- [X] T009 Implement observable `SessionStore` fulfilling `ISessionStore` contract with listener subscription and mutation dispatch in `src/storage/store.ts`
+- [X] T010 [P] Implement design tokens, color palette, typography, and base CSS reset in `src/ui/styles/variables.css`
 
 **Checkpoint**: Foundation ready - user story implementation can now begin.
 
@@ -47,16 +47,16 @@
 
 ### Tests for User Story 1
 
-- [ ] T011 [P] [US1] Unit test for participant name and consumption input validation logic in `tests/unit/validation.test.ts`
-- [ ] T012 [US1] Unit test for SessionStore participant creation, deletion, and consumption addition in `tests/unit/store.test.ts`
+- [X] T011 [P] [US1] Unit test for participant name and consumption input validation logic in `tests/unit/validation.test.ts`
+- [X] T012 [US1] Unit test for SessionStore participant creation, deletion, and consumption addition in `tests/unit/store.test.ts`
 
 ### Implementation for User Story 1
 
-- [ ] T013 [P] [US1] Implement participant creation form component in `src/ui/components/participant-form.ts`
-- [ ] T014 [P] [US1] Implement quick catalog shortcut buttons component (`Refresco 1,50 €`, `Cerveza 1,50 €`, `Snack 1,00 €`, `Café 1,20 €`) in `src/ui/components/quick-catalog.ts`
-- [ ] T015 [P] [US1] Implement custom consumption modal/form component for free-form name, price, and quantity entry in `src/ui/components/consumption-form.ts`
-- [ ] T016 [US1] Implement participant card view component rendering participant header, consumption list, and catalog/form triggers in `src/ui/components/participant-card.ts`
-- [ ] T017 [US1] Wire participant and consumption actions into main view coordinator in `src/ui/app-view.ts`
+- [X] T013 [P] [US1] Implement participant creation form component in `src/ui/components/participant-form.ts`
+- [X] T014 [P] [US1] Implement quick catalog shortcut buttons component (`Refresco 1,50 €`, `Cerveza 1,50 €`, `Snack 1,00 €`, `Café 1,20 €`) in `src/ui/components/quick-catalog.ts`
+- [X] T015 [P] [US1] Implement custom consumption modal/form component for free-form name, price, and quantity entry in `src/ui/components/consumption-form.ts`
+- [X] T016 [US1] Implement participant card view component rendering participant header, consumption list, and catalog/form triggers in `src/ui/components/participant-card.ts`
+- [X] T017 [US1] Wire participant and consumption actions into main view coordinator in `src/ui/app-view.ts`
 
 **Checkpoint**: User Story 1 is fully functional and delivers an independently testable MVP.
 
@@ -70,13 +70,13 @@
 
 ### Tests for User Story 2
 
-- [ ] T018 [P] [US2] Unit test for currency rounding accuracy, subtotal calculations, and grand total arithmetic in `tests/unit/calculations.test.ts`
+- [X] T018 [P] [US2] Unit test for currency rounding accuracy, subtotal calculations, and grand total arithmetic in `tests/unit/calculations.test.ts`
 
 ### Implementation for User Story 2
 
-- [ ] T019 [US2] Implement quantity increment (+), decrement (-), and line deletion controls in `src/ui/components/participant-card.ts`
-- [ ] T020 [P] [US2] Implement sticky header summary component showing formatted grand total in `src/ui/components/header-summary.ts`
-- [ ] T021 [US2] Connect reactive store subscription to update card subtotales and sticky grand total in `src/ui/app-view.ts`
+- [X] T019 [US2] Implement quantity increment (+), decrement (-), and line deletion controls in `src/ui/components/participant-card.ts`
+- [X] T020 [P] [US2] Implement sticky header summary component showing formatted grand total in `src/ui/components/header-summary.ts`
+- [X] T021 [US2] Connect reactive store subscription to update card subtotales and sticky grand total in `src/ui/app-view.ts`
 
 **Checkpoint**: User Stories 1 and 2 operate together with real-time financial tracking.
 
@@ -90,13 +90,13 @@
 
 ### Tests for User Story 3
 
-- [ ] T022 [P] [US3] Integration test for localStorage state serialization, parsing, and restoration in `tests/integration/storage.test.ts`
+- [X] T022 [P] [US3] Integration test for localStorage state serialization, parsing, and restoration in `tests/integration/storage.test.ts`
 
 ### Implementation for User Story 3
 
-- [ ] T023 [US3] Integrate automated synchronous save to localStorage (`bg_expense_session_v1`) on every store mutation in `src/storage/store.ts`
-- [ ] T024 [US3] Implement application bootstrapping to restore saved session or initialize empty state on startup in `src/main.ts`
-- [ ] T025 [US3] Display non-blocking warning banner when localStorage is unavailable or quota is exceeded in `src/ui/app-view.ts`
+- [X] T023 [US3] Integrate automated synchronous save to localStorage (`bg_expense_session_v1`) on every store mutation in `src/storage/store.ts`
+- [X] T024 [US3] Implement application bootstrapping to restore saved session or initialize empty state on startup in `src/main.ts`
+- [X] T025 [US3] Display non-blocking warning banner when localStorage is unavailable or quota is exceeded in `src/ui/app-view.ts`
 
 **Checkpoint**: Session state survives tab reloads and browser closures seamlessly.
 
@@ -110,9 +110,9 @@
 
 ### Implementation for User Story 4
 
-- [ ] T026 [P] [US4] Implement accessible confirmation modal component with keyboard escape, focus trap, and confirm/cancel actions in `src/ui/components/confirm-dialog.ts`
-- [ ] T027 [US4] Connect "Reiniciar sesión" button in header summary to trigger confirmation modal and reset store in `src/ui/app-view.ts`
-- [ ] T028 [US4] Connect participant deletion confirmation prompt when participant has active consumption lines in `src/ui/components/participant-card.ts`
+- [X] T026 [P] [US4] Implement accessible confirmation modal component with keyboard escape, focus trap, and confirm/cancel actions in `src/ui/components/confirm-dialog.ts`
+- [X] T027 [US4] Connect "Reiniciar sesión" button in header summary to trigger confirmation modal and reset store in `src/ui/app-view.ts`
+- [X] T028 [US4] Connect participant deletion confirmation prompt when participant has active consumption lines in `src/ui/components/participant-card.ts`
 
 **Checkpoint**: Critical destructive operations are safe against accidental touch events.
 
@@ -126,9 +126,9 @@
 
 ### Implementation for User Story 5
 
-- [ ] T029 [P] [US5] Implement responsive layout rules, sticky top header bar, and adaptive participant grid in `src/ui/styles/layout.css`
-- [ ] T030 [P] [US5] Implement card styles, button sizes (min 44x44px touch targets), chip badges, and interactive feedback in `src/ui/styles/components.css`
-- [ ] T031 [US5] Verify and refine mobile layout without horizontal overflow at 360px width in `src/ui/styles/layout.css`
+- [X] T029 [P] [US5] Implement responsive layout rules, sticky top header bar, and adaptive participant grid in `src/ui/styles/layout.css`
+- [X] T030 [P] [US5] Implement card styles, button sizes (min 44x44px touch targets), chip badges, and interactive feedback in `src/ui/styles/components.css`
+- [X] T031 [US5] Verify and refine mobile layout without horizontal overflow at 360px width in `src/ui/styles/layout.css`
 
 **Checkpoint**: Interface is fully ergonomic, responsive, and tactile.
 
@@ -138,9 +138,9 @@
 
 **Purpose**: Build verification, end-to-end documentation, and GitHub Pages deployment configuration.
 
-- [ ] T032 [P] Configure production build bundling and verify clean `dist/` output for GitHub Pages in `vite.config.ts`
-- [ ] T033 Execute manual end-to-end acceptance scenarios from `specs/001-boardgame-expense-tracker/quickstart.md`
-- [ ] T034 [P] Create project documentation with architecture summary, quickstart guide, and GitHub Pages hosting instructions in `README.md`
+- [X] T032 [P] Configure production build bundling and verify clean `dist/` output for GitHub Pages in `vite.config.ts`
+- [X] T033 Execute manual end-to-end acceptance scenarios from `specs/001-boardgame-expense-tracker/quickstart.md`
+- [X] T034 [P] Create project documentation with architecture summary, quickstart guide, and GitHub Pages hosting instructions in `README.md`
 
 ---
 
