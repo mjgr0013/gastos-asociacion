@@ -1,30 +1,33 @@
 import { describe, expect, it } from 'vitest';
 import {
-  formatPdfDateTime,
+  formatPdfDate,
   generatePdfFilename,
   generateSessionPdfBlob
 } from '../../src/domain/pdf-export';
 import { Participant } from '../../src/domain/models';
 
 describe('Domain PDF Export', () => {
-  const fixedDate = new Date(2026, 9, 14, 21, 45); // 14/10/2026 21:45
+  const fixedDate = new Date(2026, 9, 14, 21, 45, 30); // 14/10/2026 21:45:30
 
-  describe('formatPdfDateTime', () => {
-    it('formats date and time in Spanish format DD/MM/AAAA HH:mm', () => {
-      const formatted = formatPdfDateTime(fixedDate);
-      expect(formatted).toBe('14/10/2026 21:45');
+  describe('formatPdfDate', () => {
+    it('formats date in Spanish format DD/MM/AAAA without hours or seconds', () => {
+      const formatted = formatPdfDate(fixedDate);
+      expect(formatted).toBe('14/10/2026');
+      expect(formatted).not.toContain('21');
+      expect(formatted).not.toContain('45');
+      expect(formatted).not.toContain('30');
     });
   });
 
   describe('generatePdfFilename', () => {
-    it('creates a normalized filename with timestamp', () => {
+    it('creates a normalized date-only filename without hours or seconds', () => {
       const filename = generatePdfFilename(fixedDate);
-      expect(filename).toBe('cuenta-partida-20261014-2145.pdf');
+      expect(filename).toBe('cuenta-partida-20261014.pdf');
     });
   });
 
   describe('generateSessionPdfBlob', () => {
-    it('generates a valid PDF blob with reservation holder, participants and totals', async () => {
+    it('generates a valid PDF blob with reservation holder, participants and date-only header', async () => {
       const participants: Participant[] = [
         {
           id: 'p1',
@@ -69,9 +72,11 @@ describe('Domain PDF Export', () => {
       expect(text).toContain('xref');
       expect(text).toContain('%%EOF');
 
-      // Verify header details
-      expect(text).toContain('Manuel G'); // reservation holder
-      expect(text).toContain('14/10/2026 21:45');
+      // Verify header details: reservation holder and date ONLY (no hours or seconds)
+      expect(text).toContain('Manuel G');
+      expect(text).toContain('Fecha: 14/10/2026');
+      expect(text).not.toContain('21:45');
+      expect(text).not.toContain('Fecha y hora:');
 
       // Verify participants and items
       expect(text).toContain('Manu');
@@ -105,6 +110,8 @@ describe('Domain PDF Export', () => {
       const text = new TextDecoder('latin1').decode(await blob.arrayBuffer());
       expect(text).toContain('Club de Juegos');
       expect(text).toContain('Jugador 8');
+      expect(text).toContain('Fecha: 14/10/2026');
+      expect(text).not.toContain('21:45');
     });
   });
 });

@@ -41,10 +41,14 @@ npm run dev
 # 3. Ejecutar suite de pruebas unitarias e integración
 npm test
 
-# 4. Generar build estático para producción
+# 4. Ejecutar pruebas con análisis de cobertura de código
+npm run test:coverage
+# (El reporte interactivo en HTML se genera en coverage/index.html)
+
+# 5. Generar build estático para producción
 npm run build
 
-# 5. Previsualizar el bundle de producción
+# 6. Previsualizar el bundle de producción
 npm run preview
 ```
 

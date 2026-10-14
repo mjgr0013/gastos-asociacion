@@ -11,20 +11,20 @@ export interface PdfExportOptions {
   generatedAt?: Date;
 }
 
-export function formatPdfDateTime(date: Date): string {
+export function formatPdfDate(date: Date): string {
   const day = String(date.getDate()).padStart(2, '0');
   const month = String(date.getMonth() + 1).padStart(2, '0');
   const year = date.getFullYear();
   return `${day}/${month}/${year}`;
 }
 
+export const formatPdfDateTime = formatPdfDate;
+
 export function generatePdfFilename(date: Date = new Date()): string {
   const year = date.getFullYear();
   const month = String(date.getMonth() + 1).padStart(2, '0');
   const day = String(date.getDate()).padStart(2, '0');
-  const hours = String(date.getHours()).padStart(2, '0');
-  const minutes = String(date.getMinutes()).padStart(2, '0');
-  return `cuenta-partida-${year}${month}${day}-${hours}${minutes}.pdf`;
+  return `cuenta-partida-${year}${month}${day}.pdf`;
 }
 
 /**
@@ -239,7 +239,7 @@ export function generateSessionPdfBlob(options: PdfExportOptions): Blob {
   const { reservationHolder, participants, generatedAt = new Date() } = options;
   const doc = new SimplePdfWriter();
 
-  const formattedDateTime = formatPdfDateTime(generatedAt);
+  const formattedDate = formatPdfDate(generatedAt);
   const grandTotal = calculateGrandTotal(participants);
 
   const pageWidth = 595.28;
@@ -260,7 +260,7 @@ export function generateSessionPdfBlob(options: PdfExportOptions): Blob {
   doc.drawRect(marginX, y - 42, contentWidth, 42, [0.95, 0.96, 0.98], [0.82, 0.85, 0.9], 1);
   doc.drawText('DATOS DE LA RESERVA', marginX + 12, y - 16, 'F2', 9, [0.35, 0.4, 0.5]);
   doc.drawText(`Titular de la reserva: ${reservationHolder}`, marginX + 12, y - 32, 'F2', 11, [0.1, 0.15, 0.25]);
-  doc.drawText(`Fecha y hora: ${formattedDateTime}`, marginX + 310, y - 32, 'F1', 10, [0.3, 0.35, 0.45]);
+  doc.drawText(`Fecha: ${formattedDate}`, marginX + 350, y - 32, 'F1', 10, [0.3, 0.35, 0.45]);
 
   y -= 62;
 

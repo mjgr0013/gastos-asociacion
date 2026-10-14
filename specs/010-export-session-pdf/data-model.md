@@ -15,7 +15,7 @@ Parámetros de entrada para la generación del documento PDF.
 export interface PdfExportOptions {
   /** Nombre de la persona o grupo que realizó la reserva de la sala */
   reservationHolder: string;
-  /** Fecha y hora de generación (por defecto la fecha actual) */
+  /** Fecha de generación (por defecto la fecha actual, solo fecha sin marcas de hora) */
   generatedAt?: Date;
   /** Lista de participantes con sus consumiciones activas */
   participants: Participant[];
@@ -43,7 +43,7 @@ export interface PdfParticipantBreakdown {
 export interface PdfDocumentData {
   title: string;
   reservationHolder: string;
-  formattedDate: string;
+  formattedDate: string; // Formato DD/MM/AAAA
   participants: PdfParticipantBreakdown[];
   grandTotal: number;
 }
@@ -69,8 +69,8 @@ export interface PdfDocumentData {
    - `grandTotal` = suma de subtotales de todos los participantes.
    - Todos los importes se formatean con dos cifras decimales y símbolo del euro (`X,XX €`).
 
-4. **Fecha y Hora (`formattedDate`)**:
-   - Formato local en español: `DD/MM/AAAA HH:mm` (ej: `14/10/2026 22:30`).
+4. **Fecha (`formattedDate`)**:
+   - Formato local en español: `DD/MM/AAAA` (ej: `14/10/2026`), omitiendo horas, minutos y segundos.
 
 5. **Formato de Archivo Descargado (`filename`)**:
-   - Patrón sugerido: `cuenta-partida-YYYYMMDD-HHmm.pdf` (con fecha y hora numéricas normalizadas para evitar caracteres conflictivos en el sistema de archivos).
+   - Patrón sugerido: `cuenta-partida-YYYYMMDD.pdf`.

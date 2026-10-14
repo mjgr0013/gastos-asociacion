@@ -6,17 +6,17 @@
 
 **Status**: Draft
 
-**Input**: User description: "quiero poder generar un PDF con la información de lo que ha consumido cada uno, su precio, el total de cada uno y el total de toda la cuenta. En el PDF debe de ir el día y hora actual así como el nombre del que ha reservado la sala, que se meterá en un campo de texto al darle a exportar a PDF."
+**Input**: User description: "quiero que modifiques la spec 010-export-session-pdf para que sólo use fecha y no hora y segundos en el PDF"
 
 ## User Scenarios & Testing *(mandatory)*
 
 ### User Story 1 - Generación y descarga del PDF de la sesión con titular de reserva (Priority: P1) 🎯 MVP
 
-Como anfitrión o responsable de la partida en una sala de juegos o asociación, quiero pulsar un botón de "Exportar a PDF" e introducir en un cuadro de diálogo el nombre de la persona que realizó la reserva de la sala, para descargar un documento PDF formal con la fecha y hora exacta, el desglose individual de cada jugador (productos consumidos, precio unitario y total personal) y el importe total acumulado de la mesa, facilitando un comprobante imprimible o archivables para liquidar los gastos de la sala.
+Como anfitrión o responsable de la partida en una sala de juegos o asociación, quiero pulsar un botón de "Exportar a PDF" e introducir en un cuadro de diálogo el nombre de la persona que realizó la reserva de la sala, para descargar un documento PDF formal con la fecha actual de la sesión (en formato día/mes/año, sin hora ni segundos), el desglose individual de cada jugador (productos consumidos, precio unitario y total personal) y el importe total acumulado de la mesa, facilitando un comprobante imprimible o archivable para liquidar los gastos de la sala.
 
-**Why this priority**: Es la funcionalidad nuclear solicitada. Proporciona un justificante formal estructurado y listo para imprimir o enviar por correo que acredita los gastos de la sala vinculados a una reserva concreta.
+**Why this priority**: Es la funcionalidad nuclear solicitada. Proporciona un justificante formal estructurado y listo para imprimir o enviar por correo que acredita los gastos de la sala vinculados a una reserva concreta con la fecha del día sin sobrecargar con marcas de hora o segundos.
 
-**Independent Test**: Registrar participantes con consumiciones (ej. "Manu" con 2x Refresco a 1,50 € y "Carlos" con 1x Snack a 1,00 €), pulsar "Exportar a PDF", escribir "Manuel García" en el campo de titular de reserva y confirmar, verificando que se descarga un archivo PDF que contiene la fecha y hora actual, el nombre "Manuel García", el desglose de consumiciones y precios por jugador, y el total de la mesa (4,00 €).
+**Independent Test**: Registrar participantes con consumiciones (ej. "Manu" con 2x Refresco a 1,50 € y "Carlos" con 1x Snack a 1,00 €), pulsar "Exportar a PDF", escribir "Manuel García" en el campo de titular de reserva y confirmar, verificando que se descarga un archivo PDF que contiene exclusivamente la fecha actual (ej. `14/10/2026`, sin horas ni segundos), el nombre "Manuel García", el desglose de consumiciones y precios por jugador, y el total de la mesa (4,00 €).
 
 **Acceptance Scenarios**:
 
@@ -24,7 +24,7 @@ Como anfitrión o responsable de la partida en una sala de juegos o asociación,
 2. **Given** el diálogo modal de exportación abierto, **When** el usuario introduce el nombre de la reserva (ej. "Laura Gómez") y pulsa "Generar PDF", **Then** se genera y descarga automáticamente un documento PDF que incluye:
    - Título formal de la cuenta de la sesión.
    - Nombre de la persona que reservó la sala ("Reserva a nombre de: Laura Gómez").
-   - Fecha y hora exacta de emisión en formato local (`DD/MM/AAAA HH:mm`).
+   - Fecha de emisión en formato local de solo fecha (`DD/MM/AAAA`), sin incluir horas, minutos ni segundos.
    - Sección por cada participante con su lista de consumiciones (unidades, nombre del producto, precio unitario y subtotal) y el total personal a pagar.
    - Importe total global acumulado de toda la mesa.
 3. **Given** un participante registrado que no ha realizado ninguna consumición (0,00 €), **When** se genera el PDF, **Then** figura en el documento con indicación explícita de "Sin consumiciones" y subtotal de 0,00 €.
@@ -66,7 +66,7 @@ Como usuario de la aplicación, quiero que el botón de exportar a PDF se manten
 - **Nombres de reserva con caracteres especiales o tildes**: Nombres con caracteres acentuados, eñes o caracteres especiales (ej. "Peña", "Álvaro") deben imprimirse fielmente en el PDF sin sustitución por caracteres extraños.
 - **Múltiples participantes o muchas consumiciones**: Si la sesión cuenta con muchos jugadores o consumiciones que exceden una sola página, el documento PDF debe paginar correctamente manteniendo el encabezado o la coherencia visual entre páginas.
 - **Dispositivos móviles y bloqueadores de ventanas emergentes**: La descarga del PDF debe realizarse mediante descarga directa de archivo binario (blob/ObjectURL) con atributo `download`, asegurando compatibilidad en navegadores móviles (iOS Safari, Android Chrome) sin depender de ventanas emergentes externas bloqueables.
-- **Nombre de archivo sugerido**: El archivo descargado debe tener un nombre descriptivo y normalizado, por ejemplo: `cuenta-partida-YYYYMMDD-HHmm.pdf`.
+- **Nombre de archivo sugerido**: El archivo descargado debe tener un nombre descriptivo y normalizado basado en fecha, por ejemplo: `cuenta-partida-YYYYMMDD.pdf`.
 
 ## Requirements *(mandatory)*
 
@@ -77,7 +77,7 @@ Como usuario de la aplicación, quiero que el botón de exportar a PDF se manten
 - **FR-003**: Al pulsar el botón de exportar a PDF, el sistema DEBE abrir un diálogo modal solicitando el nombre de la persona que ha reservado la sala.
 - **FR-004**: El sistema DEBE validar que el nombre del titular de la reserva no esté vacío ni compuesto solo por espacios antes de proceder a la generación.
 - **FR-005**: El diálogo DEBE permitir cancelar la operación en cualquier momento cerrando el modal sin generar documentos.
-- **FR-006**: El documento PDF generado DEBE incluir la fecha y hora actual del momento de la generación en formato local legible (`DD/MM/AAAA HH:mm`).
+- **FR-006**: El documento PDF generado DEBE incluir exclusivamente la fecha actual del momento de la generación en formato local legible (`DD/MM/AAAA`), omitiendo horas, minutos y segundos.
 - **FR-007**: El documento PDF generado DEBE incluir de forma destacada el nombre del titular de la reserva de la sala introducido por el usuario.
 - **FR-008**: El documento PDF generado DEBE desglosar por cada participante de la mesa:
   - Nombre del participante.
@@ -92,7 +92,7 @@ Como usuario de la aplicación, quiero que el botón de exportar a PDF se manten
 
 - **Datos de Exportación a PDF (PdfExportData)**:
   - `reservationHolder`: Nombre de quien ha reservado la sala (cadena obligatoria, recortada de espacios).
-  - `generatedAt`: Fecha y hora de generación (objeto Date / string formateado).
+  - `generatedAt`: Fecha de generación sin horas ni segundos (objeto Date / string formateado en `DD/MM/AAAA`).
   - `participants`: Lista de participantes con sus nombres, consumiciones desglosadas (cantidad, producto, precio unitario, subtotal) y subtotal individual.
   - `grandTotal`: Total global de la sesión en euros.
 
@@ -104,9 +104,10 @@ Como usuario de la aplicación, quiero que el botón de exportar a PDF se manten
 - **SC-002**: El 100% de los importes individuales por producto, subtotales por jugador y total global calculados en el PDF coinciden exactamente con los valores calculados en la interfaz de usuario.
 - **SC-003**: Cero peticiones de red externas para la generación del documento (100% de ejecución offline en cliente).
 - **SC-004**: El documento generado es 100% estándar y reproducible en los visores nativos de PDF de Android, iOS, Windows, macOS y Linux.
+- **SC-005**: La marca temporal reflejada en el encabezado del documento PDF generado contiene exclusivamente el formato de fecha `DD/MM/AAAA` (0% de presencia de horas o segundos).
 
 ## Assumptions
 
 - **Ubicación del control**: El botón de exportar a PDF se sitúa en la barra superior de acciones de la cabecera (junto al botón de compartir existente), manteniendo consistencia visual.
-- **Formato del documento**: El PDF tendrá formato estándar A4 vertical con tipografía legible, alineación monetaria a la derecha y encabezado con la información de la reserva y fecha/hora.
+- **Formato del documento**: El PDF tendrá formato estándar A4 vertical con tipografía legible, alineación monetaria a la derecha y encabezado con la información de la reserva y fecha actual (solo fecha `DD/MM/AAAA`).
 - **Persistencia del nombre de reserva**: El nombre de quien reservó la sala se solicita en el momento de exportar el PDF y no requiere ser almacenado permanentemente en la sesión una vez completada la descarga.
