@@ -19,8 +19,9 @@ Desplegable directamente en **GitHub Pages** sin servidores ni bases de datos ex
 
 ---
 
-## Tecnologías
+## Tecnologías y Requisitos
 
+- **Entorno de Ejecución**: Node.js v26+ (especificado en `.nvmrc` y `engines` de `package.json`).
 - **Lenguaje**: TypeScript 5.x estricto.
 - **Herramientas**: Vite 5.x y Vitest.
 - **Estilos**: Vanilla CSS con Custom Properties (Design Tokens), Flexbox y CSS Grid.
