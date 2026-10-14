@@ -116,6 +116,24 @@
   filter: grayscale(1);
 }
 
+.btn-export-pdf {
+  background-color: #f1f5f9;
+  color: #0f766e;
+  border: 1px solid #cbd5e1;
+  padding: 0 var(--space-3);
+}
+
+.btn-export-pdf:hover:not(:disabled) {
+  background-color: #ccfbf1;
+  border-color: #0d9488;
+}
+
+.btn-export-pdf:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+  filter: grayscale(1);
+}
+
 .btn-icon {
   margin-right: var(--space-1);
   font-size: 1.1em;
@@ -484,6 +502,35 @@
 
 .modal-confirm-card {
   max-width: 400px;
+}
+
+.modal-export-pdf-card {
+  max-width: 440px;
+}
+
+.export-pdf-description {
+  color: var(--color-text-muted);
+  font-size: var(--font-size-sm);
+  margin-bottom: var(--space-4);
+  line-height: 1.4;
+}
+
+.input-reservation-holder {
+  width: 100%;
+  height: var(--touch-target-min);
+  padding: 0 var(--space-3);
+  font-size: var(--font-size-base);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background-color: var(--color-bg-base);
+  color: var(--color-text-base);
+  outline: none;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+
+.input-reservation-holder:focus {
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.2);
 }
 
 @keyframes modalFadeIn {

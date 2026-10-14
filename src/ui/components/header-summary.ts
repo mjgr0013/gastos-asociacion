@@ -4,6 +4,7 @@ import { Participant } from '../../domain/models';
 export interface HeaderSummaryOptions {
   onResetRequested: () => void;
   onShareRequested?: () => void;
+  onExportPdfRequested?: () => void;
 }
 
 export class HeaderSummaryComponent {
@@ -11,6 +12,7 @@ export class HeaderSummaryComponent {
   private totalValueElement: HTMLElement;
   private participantsCountElement: HTMLElement;
   private shareButton: HTMLButtonElement;
+  private exportPdfButton: HTMLButtonElement;
   private options: HeaderSummaryOptions;
 
   constructor(options: HeaderSummaryOptions) {
@@ -46,6 +48,16 @@ export class HeaderSummaryComponent {
           </button>
           <button
             type="button"
+            class="btn btn-export-pdf"
+            id="btn-export-pdf"
+            title="Exportar cuenta a PDF"
+            disabled
+          >
+            <span class="btn-icon">📄</span>
+            <span class="btn-text">PDF</span>
+          </button>
+          <button
+            type="button"
             class="btn btn-outline-danger btn-reset-session"
             id="btn-reset-session"
             title="Reiniciar mesa y empezar una cuenta nueva"
@@ -60,9 +72,14 @@ export class HeaderSummaryComponent {
     this.totalValueElement = this.element.querySelector('#header-grand-total') as HTMLElement;
     this.participantsCountElement = this.element.querySelector('#header-participants-count') as HTMLElement;
     this.shareButton = this.element.querySelector('#btn-share-session') as HTMLButtonElement;
+    this.exportPdfButton = this.element.querySelector('#btn-export-pdf') as HTMLButtonElement;
 
     this.shareButton.addEventListener('click', () => {
       this.options.onShareRequested?.();
+    });
+
+    this.exportPdfButton.addEventListener('click', () => {
+      this.options.onExportPdfRequested?.();
     });
 
     const resetBtn = this.element.querySelector('#btn-reset-session');
@@ -80,6 +97,7 @@ export class HeaderSummaryComponent {
       count === 1 ? '1 jugador' : `${count} jugadores`;
 
     this.shareButton.disabled = count === 0;
+    this.exportPdfButton.disabled = count === 0;
   }
 
   public getElement(): HTMLElement {

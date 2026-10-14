@@ -31,6 +31,7 @@ export const DEFAULT_CATALOG_PRESETS: ReadonlyArray<QuickCatalogPreset> = [
   { id: 'preset-pipes', name: 'Pipas', unitPrice: 1, icon: '🌻' },
   { id: 'preset-candies', name: 'Golosinas', unitPrice: 1, icon: '🍬' },
   { id: 'preset-scrambled', name: 'Revuelto', unitPrice: 1, icon: '🥜' },
+  { id: 'preset-water', name: 'Agua', unitPrice: 1, icon: '💧' },
 ];
 
 export interface SessionState {

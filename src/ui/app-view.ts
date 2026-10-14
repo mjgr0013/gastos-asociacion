@@ -1,10 +1,13 @@
 import { formatCurrency } from '../domain/calculations';
 import { ConsumptionItem, Participant, QuickCatalogPreset, SessionState } from '../domain/models';
+import { generatePdfFilename, generateSessionPdfBlob } from '../domain/pdf-export';
 import { generateSessionShareText } from '../domain/sharing';
 import { SessionStore } from '../storage/store';
+import { downloadBlob } from '../utils/download';
 import { shareOrCopyText } from '../utils/share';
 import { ConfirmDialogComponent } from './components/confirm-dialog';
 import { ConsumptionFormComponent, CustomConsumptionPayload } from './components/consumption-form';
+import { ExportPdfModalComponent } from './components/export-pdf-modal';
 import { HeaderSummaryComponent } from './components/header-summary';
 import { ParticipantCardComponent } from './components/participant-card';
 import { ParticipantFormComponent } from './components/participant-form';
@@ -47,7 +50,8 @@ export class AppView {
     // Cabecera de resumen
     this.headerSummary = new HeaderSummaryComponent({
       onResetRequested: () => this.handleResetSession(),
-      onShareRequested: () => this.handleShareSession()
+      onShareRequested: () => this.handleShareSession(),
+      onExportPdfRequested: () => this.handleExportPdf()
     });
     this.container.querySelector('#header-mount')?.appendChild(this.headerSummary.getElement());
 
@@ -222,6 +226,32 @@ export class AppView {
       ToastComponent.show('¡Resumen copiado al portapapeles!');
     } else if (result === 'error') {
       ToastComponent.show('No se pudo compartir ni copiar automáticamente.');
+    }
+  }
+
+  private async handleExportPdf(): Promise<void> {
+    const state = this.store.getState();
+    if (state.participants.length === 0) {
+      return;
+    }
+
+    const reservationHolder = await ExportPdfModalComponent.show();
+    if (!reservationHolder) {
+      return;
+    }
+
+    try {
+      const blob = generateSessionPdfBlob({
+        reservationHolder,
+        participants: state.participants,
+        generatedAt: new Date()
+      });
+      const filename = generatePdfFilename();
+      downloadBlob(blob, filename);
+      ToastComponent.show('¡PDF descargado con éxito!');
+    } catch (err: unknown) {
+      console.error('Error generating PDF', err);
+      ToastComponent.show('Error al generar el documento PDF.');
     }
   }
 }
