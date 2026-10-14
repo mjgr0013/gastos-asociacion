@@ -19,7 +19,6 @@ export class QuickCatalogComponent {
 
   private render(): void {
     this.element.innerHTML = `
-      <div class="quick-catalog-label">Añadir rápido:</div>
       <div class="quick-catalog-chips">
         ${DEFAULT_CATALOG_PRESETS.map(
           (preset) => `

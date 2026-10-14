@@ -20,10 +20,16 @@ export interface QuickCatalogPreset {
 }
 
 export const DEFAULT_CATALOG_PRESETS: ReadonlyArray<QuickCatalogPreset> = [
-  { id: 'preset-soda', name: 'Refresco', unitPrice: 1.50, icon: '🥤' },
-  { id: 'preset-beer', name: 'Cerveza', unitPrice: 1.50, icon: '🍺' },
-  { id: 'preset-snack', name: 'Snack', unitPrice: 1.00, icon: '🍿' },
-  { id: 'preset-coffee', name: 'Café', unitPrice: 1.20, icon: '☕' }
+  { id: 'preset-soda', name: 'Refresco', unitPrice: 1, icon: '🥤' },
+  { id: 'preset-beer', name: 'Cerveza', unitPrice: 1, icon: '🍺' },
+  { id: 'preset-snack', name: 'Snack', unitPrice: 1.20, icon: '🥨' },
+  { id: 'preset-popcorns', name: 'Palomitas', unitPrice: 1, icon: '🍿' },
+  { id: 'preset-coffee-hot', name: 'Café caliente', unitPrice: 0.8, icon: '☕' },
+  { id: 'preset-coffee-cold', name: 'Café frío', unitPrice: 1.20, icon: '🧋' },
+  { id: 'preset-monster', name: 'Monster', unitPrice: 1.50, icon: '⚡' },
+  { id: 'preset-pipes', name: 'Pipas', unitPrice: 1, icon: '🌻' },
+  { id: 'preset-candies', name: 'Golosinas', unitPrice: 1, icon: '🍬' },
+  { id: 'preset-scrambled', name: 'Revuelto', unitPrice: 1, icon: '🥜' },
 ];
 
 export interface SessionState {
