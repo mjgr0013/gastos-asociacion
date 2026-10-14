@@ -101,6 +101,7 @@ Como usuario, quiero utilizar la aplicación con la misma comodidad desde la pan
 - **Valores numéricos no válidos o negativos**: Si se introduce un precio unitario menor o igual a 0, con caracteres no numéricos o una cantidad menor a 1, el sistema debe bloquear el registro y solicitar valores positivos válidos.
 - **Precisión monetaria y decimales**: Los precios en euros deben admitir céntimos (hasta dos posiciones decimales) y los redondeos matemáticos deben evitar discrepancias de céntimos en la suma acumulada.
 - **Eliminación de participante con gastos**: Al eliminar un participante que ya tiene consumiciones asignadas, el sistema debe pedir confirmación para evitar que el total de la mesa se descuadre de forma involuntaria.
+- **Eliminación de consumición**: Al pulsar el botón de eliminar o reducir la cantidad de una consumición a 0, el sistema debe solicitar confirmación previa indicando el producto y participante para evitar borrados accidentales en dispositivos táctiles.
 - **Almacenamiento del navegador lleno o bloqueado**: Si el almacenamiento local del navegador no está disponible (modo incógnito muy restrictivo o cuota excedida), la aplicación debe continuar funcionando en memoria durante la sesión activa e informar al usuario de que los cambios no persistirán ante recargas.
 - **Pulsación accidental de reinicio**: El diálogo de confirmación debe requerir una acción deliberada y clara para evitar que un doble clic o toque rápido borre la mesa.
 
@@ -114,7 +115,7 @@ Como usuario, quiero utilizar la aplicación con la misma comodidad desde la pan
 - **FR-004**: El sistema DEBE permitir registrar consumiciones vinculadas a un participante específico mediante dos modalidades:
   - **Catálogo rápido**: Botones de acceso directo con productos habituales preconfigurados (mínimo Refresco 1,50 €, Cerveza 1,50 €, Snack 1,00 €, Café 1,20 €) para asignación inmediata con un solo toque.
   - **Formulario libre**: Campos para especificar concepto/nombre del producto personalizado, precio unitario en euros (€) mayor que cero y cantidad entera positiva (mínimo 1).
-- **FR-005**: El sistema DEBE permitir modificar la cantidad o eliminar una consumición previamente asignada a un participante.
+- **FR-005**: El sistema DEBE permitir modificar la cantidad o eliminar una consumición previamente asignada a un participante, requiriendo confirmación previa antes de eliminarla.
 - **FR-006**: El sistema DEBE calcular y mostrar en tiempo real el subtotal adeudado por cada participante (suma de `precio unitario * cantidad` de todas sus consumiciones).
 - **FR-007**: El sistema DEBE calcular y mostrar en tiempo real el importe total global adeudado de la sesión (suma acumulada de los subtotales de todos los participantes), sin gestionar estados de pago ni cobro individual.
 - **FR-008**: El sistema DEBE formatear todos los importes monetarios en euros con dos decimales estándar (ej: `1,50 €` o `1.50 €`).

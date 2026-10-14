@@ -1,4 +1,5 @@
-import { Participant, QuickCatalogPreset, SessionState } from '../domain/models';
+import { formatCurrency } from '../domain/calculations';
+import { ConsumptionItem, Participant, QuickCatalogPreset, SessionState } from '../domain/models';
 import { SessionStore } from '../storage/store';
 import { ConfirmDialogComponent } from './components/confirm-dialog';
 import { ConsumptionFormComponent, CustomConsumptionPayload } from './components/consumption-form';
@@ -83,7 +84,16 @@ export class AppView {
         onSelectPreset: (pId, preset) => this.handleSelectPreset(pId, preset),
         onOpenCustomForm: (p) => this.handleOpenCustomForm(p),
         onUpdateQuantity: (pId, itemId, newQty) => this.handleUpdateQuantity(pId, itemId, newQty),
-        onRemoveItem: (pId, itemId) => this.handleRemoveItem(pId, itemId),
+        onRequestRemoveItem: (p, item) => this.handleRequestRemoveItem(p, item),
+        onRemoveItem: (pId, itemId) => {
+          const participant = state.participants.find((p) => p.id === pId);
+          const item = participant?.items.find((i) => i.id === itemId);
+          if (participant && item) {
+            this.handleRequestRemoveItem(participant, item);
+          } else {
+            this.store.removeConsumption(pId, itemId);
+          }
+        },
         onRequestDeleteParticipant: (p) => this.handleRequestDeleteParticipant(p)
       });
       this.participantsListContainer.appendChild(card.getElement());
@@ -127,8 +137,19 @@ export class AppView {
     this.store.updateConsumptionQuantity(participantId, itemId, newQty);
   }
 
-  private handleRemoveItem(participantId: string, itemId: string): void {
-    this.store.removeConsumption(participantId, itemId);
+  private async handleRequestRemoveItem(participant: Participant, item: ConsumptionItem): Promise<void> {
+    const formattedPrice = formatCurrency(item.unitPrice);
+    const confirmed = await ConfirmDialogComponent.show({
+      title: '¿Eliminar consumición?',
+      message: `¿Seguro que deseas eliminar "${item.name}" (${item.quantity} x ${formattedPrice}) de ${participant.name}?`,
+      confirmText: 'Eliminar',
+      cancelText: 'Cancelar',
+      isDanger: true
+    });
+
+    if (confirmed) {
+      this.store.removeConsumption(participant.id, item.id);
+    }
   }
 
   private async handleRequestDeleteParticipant(participant: Participant): Promise<void> {

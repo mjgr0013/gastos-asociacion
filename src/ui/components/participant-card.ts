@@ -11,7 +11,8 @@ export interface ParticipantCardOptions {
   onSelectPreset: (participantId: string, preset: QuickCatalogPreset) => void;
   onOpenCustomForm: (participant: Participant) => void;
   onUpdateQuantity: (participantId: string, itemId: string, newQty: number) => void;
-  onRemoveItem: (participantId: string, itemId: string) => void;
+  onRequestRemoveItem?: (participant: Participant, item: ConsumptionItem) => void;
+  onRemoveItem?: (participantId: string, itemId: string) => void;
   onRequestDeleteParticipant: (participant: Participant) => void;
 }
 
@@ -154,7 +155,15 @@ export class ParticipantCardComponent {
         const itemId = btn.getAttribute('data-item-id');
         const item = participant.items.find((i) => i.id === itemId);
         if (item) {
-          this.options.onUpdateQuantity(participant.id, item.id, item.quantity - 1);
+          if (item.quantity <= 1) {
+            if (this.options.onRequestRemoveItem) {
+              this.options.onRequestRemoveItem(participant, item);
+            } else if (this.options.onRemoveItem) {
+              this.options.onRemoveItem(participant.id, item.id);
+            }
+          } else {
+            this.options.onUpdateQuantity(participant.id, item.id, item.quantity - 1);
+          }
         }
       });
     });
@@ -163,8 +172,13 @@ export class ParticipantCardComponent {
     this.element.querySelectorAll<HTMLButtonElement>('.btn-item-delete').forEach((btn) => {
       btn.addEventListener('click', () => {
         const itemId = btn.getAttribute('data-item-id');
-        if (itemId) {
-          this.options.onRemoveItem(participant.id, itemId);
+        const item = participant.items.find((i) => i.id === itemId);
+        if (item) {
+          if (this.options.onRequestRemoveItem) {
+            this.options.onRequestRemoveItem(participant, item);
+          } else if (this.options.onRemoveItem) {
+            this.options.onRemoveItem(participant.id, item.id);
+          }
         }
       });
     });
