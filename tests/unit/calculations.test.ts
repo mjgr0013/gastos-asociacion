@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest';
 import {
   calculateGrandTotal,
   calculateItemTotal,
+  calculateParticipantItemUnits,
   calculateParticipantTotal,
   formatCurrency,
   roundCurrency
@@ -83,6 +84,31 @@ describe('Domain Calculations & Currency Formatting', () => {
 
     it('returns 0 for empty list of participants', () => {
       expect(calculateGrandTotal([])).toBe(0);
+    });
+  });
+
+  describe('calculateParticipantItemUnits', () => {
+    it('calculates total units consumed by a participant', () => {
+      const participant: Participant = {
+        id: 'p1',
+        name: 'Manu',
+        createdAt: new Date().toISOString(),
+        items: [
+          { id: 'i1', name: 'Refresco', unitPrice: 1.5, quantity: 3 },
+          { id: 'i2', name: 'Snack', unitPrice: 1.0, quantity: 2 }
+        ]
+      };
+      expect(calculateParticipantItemUnits(participant)).toBe(5);
+    });
+
+    it('returns 0 when participant has no items', () => {
+      const participant: Participant = {
+        id: 'p1',
+        name: 'Manu',
+        createdAt: new Date().toISOString(),
+        items: []
+      };
+      expect(calculateParticipantItemUnits(participant)).toBe(0);
     });
   });
 });

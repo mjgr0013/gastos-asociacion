@@ -1,5 +1,6 @@
 import {
   calculateItemTotal,
+  calculateParticipantItemUnits,
   calculateParticipantTotal,
   formatCurrency
 } from '../../domain/calculations';
@@ -8,6 +9,8 @@ import { QuickCatalogComponent } from './quick-catalog';
 
 export interface ParticipantCardOptions {
   participant: Participant;
+  isCollapsed?: boolean;
+  onToggleCollapse?: (participantId: string) => void;
   onSelectPreset: (participantId: string, preset: QuickCatalogPreset) => void;
   onOpenCustomForm: (participant: Participant) => void;
   onUpdateQuantity: (participantId: string, itemId: string, newQty: number) => void;
@@ -24,6 +27,9 @@ export class ParticipantCardComponent {
     this.options = options;
     this.element = document.createElement('article');
     this.element.className = 'participant-card';
+    if (options.isCollapsed) {
+      this.element.classList.add('is-collapsed');
+    }
     this.element.setAttribute('data-participant-id', options.participant.id);
     this.render();
   }
@@ -31,12 +37,30 @@ export class ParticipantCardComponent {
   private render(): void {
     const { participant } = this.options;
     const subtotal = calculateParticipantTotal(participant);
+    const totalUnits = calculateParticipantItemUnits(participant);
+    const isCollapsed = Boolean(this.options.isCollapsed);
 
     this.element.innerHTML = `
-      <header class="card-header">
+      <header
+        class="card-header"
+        role="button"
+        tabindex="0"
+        aria-expanded="${!isCollapsed}"
+        aria-controls="card-body-${participant.id}"
+        aria-label="${isCollapsed ? 'Desplegar' : 'Colapsar'} consumiciones de ${escapeHtml(participant.name)}"
+      >
         <div class="participant-identity">
+          <button
+            type="button"
+            class="btn-toggle-collapse"
+            tabindex="-1"
+            aria-hidden="true"
+          >
+            <span class="collapse-chevron">▼</span>
+          </button>
           <span class="participant-avatar">🎲</span>
           <h3 class="participant-name">${escapeHtml(participant.name)}</h3>
+          <span class="participant-items-count">(${totalUnits} ${totalUnits === 1 ? 'ud' : 'uds'})</span>
         </div>
         <div class="card-header-actions">
           <div class="participant-subtotal-badge" title="Subtotal de ${escapeHtml(participant.name)}">
@@ -53,7 +77,7 @@ export class ParticipantCardComponent {
         </div>
       </header>
 
-      <div class="card-body">
+      <div id="card-body-${participant.id}" class="card-body">
         <div class="quick-catalog-mount"></div>
 
         <div class="items-section">
@@ -83,9 +107,44 @@ export class ParticipantCardComponent {
     // Bind item actions (+, -, delete)
     this.bindItemActions();
 
+    // Bind header toggle collapse
+    const header = this.element.querySelector('.card-header') as HTMLElement;
+    const toggleCollapse = () => {
+      if (this.options.onToggleCollapse) {
+        this.options.onToggleCollapse(participant.id);
+      } else {
+        const nowCollapsed = this.element.classList.toggle('is-collapsed');
+        header.setAttribute('aria-expanded', String(!nowCollapsed));
+        header.setAttribute(
+          'aria-label',
+          `${nowCollapsed ? 'Desplegar' : 'Colapsar'} consumiciones de ${participant.name}`
+        );
+      }
+    };
+
+    header?.addEventListener('click', (e) => {
+      const target = e.target as HTMLElement;
+      if (target.closest('.btn-delete-participant')) {
+        return;
+      }
+      toggleCollapse();
+    });
+
+    header?.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        const target = e.target as HTMLElement;
+        if (target.closest('.btn-delete-participant')) {
+          return;
+        }
+        e.preventDefault();
+        toggleCollapse();
+      }
+    });
+
     // Bind delete participant
     const deleteBtn = this.element.querySelector('.btn-delete-participant');
-    deleteBtn?.addEventListener('click', () => {
+    deleteBtn?.addEventListener('click', (e) => {
+      e.stopPropagation();
       this.options.onRequestDeleteParticipant(participant);
     });
   }

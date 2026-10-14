@@ -14,6 +14,7 @@ export class AppView {
   private participantForm: ParticipantFormComponent;
   private participantsListContainer: HTMLElement;
   private activeModal: ConsumptionFormComponent | null = null;
+  private collapsedParticipantIds: Set<string> = new Set();
 
   constructor(container: HTMLElement, store: SessionStore) {
     this.container = container;
@@ -81,6 +82,8 @@ export class AppView {
     state.participants.forEach((participant) => {
       const card = new ParticipantCardComponent({
         participant,
+        isCollapsed: this.collapsedParticipantIds.has(participant.id),
+        onToggleCollapse: (pId) => this.handleToggleCollapse(pId),
         onSelectPreset: (pId, preset) => this.handleSelectPreset(pId, preset),
         onOpenCustomForm: (p) => this.handleOpenCustomForm(p),
         onUpdateQuantity: (pId, itemId, newQty) => this.handleUpdateQuantity(pId, itemId, newQty),
@@ -98,6 +101,15 @@ export class AppView {
       });
       this.participantsListContainer.appendChild(card.getElement());
     });
+  }
+
+  private handleToggleCollapse(participantId: string): void {
+    if (this.collapsedParticipantIds.has(participantId)) {
+      this.collapsedParticipantIds.delete(participantId);
+    } else {
+      this.collapsedParticipantIds.add(participantId);
+    }
+    this.renderState(this.store.getState());
   }
 
   private handleAddParticipant(name: string): void {
@@ -165,6 +177,7 @@ export class AppView {
       if (!confirmed) return;
     }
 
+    this.collapsedParticipantIds.delete(participant.id);
     this.store.removeParticipant(participant.id);
   }
 
@@ -184,6 +197,7 @@ export class AppView {
     });
 
     if (confirmed) {
+      this.collapsedParticipantIds.clear();
       this.store.resetSession();
     }
   }

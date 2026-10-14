@@ -25,6 +25,10 @@ export function calculateParticipantTotal(participant: Participant): number {
   return roundCurrency(total);
 }
 
+export function calculateParticipantItemUnits(participant: Participant): number {
+  return participant.items.reduce((sum, item) => sum + item.quantity, 0);
+}
+
 export function calculateGrandTotal(participants: Participant[]): number {
   const total = participants.reduce(
     (sum, p) => sum + calculateParticipantTotal(p),
