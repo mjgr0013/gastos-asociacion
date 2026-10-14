@@ -134,6 +134,101 @@
   filter: grayscale(1);
 }
 
+/* Mobile Header Actions Menu Toggle */
+.btn-header-menu-toggle {
+  background-color: #f1f5f9;
+  color: var(--color-primary-hover);
+  border: 1px solid #cbd5e1;
+  padding: 0 var(--space-3);
+  height: var(--touch-target-min);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-1);
+  font-weight: 600;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: background-color 0.15s, border-color 0.15s;
+}
+
+.btn-header-menu-toggle:hover {
+  background-color: var(--color-primary-light);
+  border-color: var(--color-primary);
+}
+
+.btn-header-menu-toggle .btn-caret {
+  font-size: 0.85em;
+  margin-left: 2px;
+  transition: transform 0.2s ease;
+}
+
+.btn-header-menu-toggle[aria-expanded="true"] .btn-caret {
+  transform: rotate(180deg);
+}
+
+/* Floating Dropdown */
+.header-menu-dropdown {
+  position: absolute;
+  top: calc(100% + var(--space-2));
+  right: 0;
+  z-index: 200;
+  min-width: 200px;
+  background-color: var(--color-bg-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
+  padding: var(--space-1) 0;
+  display: flex;
+  flex-direction: column;
+  animation: modalFadeIn 0.15s ease-out;
+}
+
+.header-menu-dropdown[hidden] {
+  display: none !important;
+}
+
+.header-menu-item {
+  width: 100%;
+  min-height: 44px;
+  padding: var(--space-2) var(--space-3);
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  background: none;
+  border: none;
+  font-size: var(--font-size-sm);
+  font-weight: 500;
+  color: var(--color-text-main);
+  text-align: left;
+  cursor: pointer;
+  transition: background-color 0.12s, color 0.12s;
+}
+
+.header-menu-item:hover:not(:disabled) {
+  background-color: var(--color-bg-base);
+}
+
+.header-menu-item:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+  filter: grayscale(1);
+}
+
+.header-menu-item-danger {
+  color: var(--color-danger);
+}
+
+.header-menu-item-danger:hover:not(:disabled) {
+  background-color: #fee2e2;
+  color: #b91c1c;
+}
+
+.header-menu-divider {
+  height: 1px;
+  background-color: var(--color-border);
+  margin: var(--space-1) 0;
+}
+
 .btn-icon {
   margin-right: var(--space-1);
   font-size: 1.1em;

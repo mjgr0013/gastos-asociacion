@@ -78,6 +78,21 @@
   border-radius: var(--radius-md);
 }
 
+/* Header Actions Layout - Mobile First */
+.header-actions {
+  display: flex;
+  align-items: center;
+}
+
+.header-actions-desktop {
+  display: none;
+}
+
+.header-actions-mobile {
+  display: block;
+  position: relative;
+}
+
 .header-total-label {
   font-size: 10px;
   font-weight: 700;
@@ -140,6 +155,16 @@
 
   .header-content-wrapper {
     gap: var(--space-3);
+  }
+
+  .header-actions-desktop {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+  }
+
+  .header-actions-mobile {
+    display: none;
   }
 
   .header-logo {
