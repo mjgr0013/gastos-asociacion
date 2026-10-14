@@ -37,6 +37,10 @@ export class ParticipantFormComponent {
     this.inputElement = this.element.querySelector('#new-participant-name') as HTMLInputElement;
     this.errorElement = this.element.querySelector('#participant-form-error') as HTMLElement;
 
+    this.inputElement.addEventListener('input', () => {
+      this.clearError();
+    });
+
     const form = this.element.querySelector('#participant-add-form') as HTMLFormElement;
     form.addEventListener('submit', (e) => this.handleSubmit(e));
   }
@@ -58,6 +62,7 @@ export class ParticipantFormComponent {
     } catch (err: unknown) {
       const msg = err instanceof Error ? err.message : 'Error al añadir participante';
       this.showError(msg);
+      this.inputElement.focus();
     }
   }
 

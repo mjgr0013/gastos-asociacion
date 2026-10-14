@@ -5,6 +5,7 @@ import {
   SessionState
 } from '../domain/models';
 import {
+  formatParticipantName,
   validateConsumptionInput,
   validateParticipantName
 } from '../domain/validation';
@@ -66,14 +67,15 @@ export class SessionStore {
   }
 
   public addParticipant(name: string): Participant {
-    const validation = validateParticipantName(name);
+    const existingNames = this.state.participants.map((p) => p.name);
+    const validation = validateParticipantName(name, existingNames);
     if (!validation.valid) {
       throw new Error(validation.error || 'Nombre de participante no válido');
     }
 
     const newParticipant: Participant = {
       id: generateId(),
-      name: name.trim(),
+      name: formatParticipantName(name),
       items: [],
       createdAt: new Date().toISOString()
     };

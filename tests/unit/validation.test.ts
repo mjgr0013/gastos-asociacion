@@ -1,10 +1,48 @@
 import { describe, expect, it } from 'vitest';
 import {
+  formatParticipantName,
+  isDuplicateParticipantName,
   validateConsumptionInput,
   validateParticipantName
 } from '../../src/domain/validation';
 
 describe('Domain Validation', () => {
+  describe('formatParticipantName', () => {
+    it('capitalizes the first letter of a name and trims whitespace', () => {
+      expect(formatParticipantName('manu')).toBe('Manu');
+      expect(formatParticipantName('  carlos  ')).toBe('Carlos');
+      expect(formatParticipantName('elena')).toBe('Elena');
+    });
+
+    it('handles accented letters and special characters at start', () => {
+      expect(formatParticipantName('ángel')).toBe('Ángel');
+      expect(formatParticipantName('  óscar  ')).toBe('Óscar');
+    });
+
+    it('preserves already capitalized names and empty strings', () => {
+      expect(formatParticipantName('Manu')).toBe('Manu');
+      expect(formatParticipantName('')).toBe('');
+      expect(formatParticipantName('   ')).toBe('');
+    });
+  });
+
+  describe('isDuplicateParticipantName', () => {
+    const existing = ['Manu', 'Carlos'];
+
+    it('detects duplicate names case-insensitively and ignoring spaces', () => {
+      expect(isDuplicateParticipantName('Manu', existing)).toBe(true);
+      expect(isDuplicateParticipantName('manu', existing)).toBe(true);
+      expect(isDuplicateParticipantName('MANU', existing)).toBe(true);
+      expect(isDuplicateParticipantName('  manu  ', existing)).toBe(true);
+      expect(isDuplicateParticipantName('carlos', existing)).toBe(true);
+    });
+
+    it('returns false when name is not in the list', () => {
+      expect(isDuplicateParticipantName('Elena', existing)).toBe(false);
+      expect(isDuplicateParticipantName('Manuel', existing)).toBe(false);
+    });
+  });
+
   describe('validateParticipantName', () => {
     it('accepts valid non-empty names', () => {
       expect(validateParticipantName('Manu')).toEqual({ valid: true });
@@ -28,6 +66,21 @@ describe('Domain Validation', () => {
       expect(validateParticipantName(longName)).toEqual({
         valid: false,
         error: 'El nombre del participante no puede superar los 50 caracteres.'
+      });
+    });
+
+    it('rejects duplicate participant names case-insensitively', () => {
+      const existing = ['Manu', 'Carlos'];
+      expect(validateParticipantName('manu', existing)).toEqual({
+        valid: false,
+        error: 'Ya existe un jugador con este nombre en la mesa.'
+      });
+      expect(validateParticipantName('  MANU  ', existing)).toEqual({
+        valid: false,
+        error: 'Ya existe un jugador con este nombre en la mesa.'
+      });
+      expect(validateParticipantName('Elena', existing)).toEqual({
+        valid: true
       });
     });
   });

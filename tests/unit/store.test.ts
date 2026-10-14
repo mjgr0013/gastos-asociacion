@@ -38,14 +38,27 @@ describe('SessionStore - User Story 1', () => {
     expect(state.version).toBe(1);
   });
 
-  it('adds participants successfully and trims whitespace', () => {
-    const p1 = store.addParticipant('  Manu  ');
+  it('adds participants successfully and capitalizes first letter', () => {
+    const p1 = store.addParticipant('  manu  ');
     expect(p1.name).toBe('Manu');
     expect(p1.items).toEqual([]);
 
     const state = store.getState();
     expect(state.participants).toHaveLength(1);
     expect(state.participants[0].name).toBe('Manu');
+  });
+
+  it('throws error when adding duplicate participant name case-insensitively', () => {
+    store.addParticipant('Manu');
+    expect(() => store.addParticipant('manu')).toThrow(
+      'Ya existe un jugador con este nombre en la mesa.'
+    );
+    expect(() => store.addParticipant('MANU')).toThrow(
+      'Ya existe un jugador con este nombre en la mesa.'
+    );
+    expect(() => store.addParticipant('  Manu  ')).toThrow(
+      'Ya existe un jugador con este nombre en la mesa.'
+    );
   });
 
   it('throws error when adding invalid participant name', () => {

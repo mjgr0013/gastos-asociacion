@@ -3,13 +3,40 @@ export interface ValidationResult {
   error?: string;
 }
 
-export function validateParticipantName(name: string): ValidationResult {
+export function formatParticipantName(name: string): string {
+  const trimmed = name.trim();
+  if (trimmed.length === 0) {
+    return '';
+  }
+  return trimmed.charAt(0).toUpperCase() + trimmed.slice(1);
+}
+
+export function isDuplicateParticipantName(
+  name: string,
+  existingNames: string[]
+): boolean {
+  const normalized = name.trim().toLowerCase();
+  if (normalized.length === 0) {
+    return false;
+  }
+  return existingNames.some(
+    (existing) => existing.trim().toLowerCase() === normalized
+  );
+}
+
+export function validateParticipantName(
+  name: string,
+  existingNames: string[] = []
+): ValidationResult {
   const trimmed = name.trim();
   if (trimmed.length === 0) {
     return { valid: false, error: 'El nombre del participante no puede estar vacío.' };
   }
   if (trimmed.length > 50) {
     return { valid: false, error: 'El nombre del participante no puede superar los 50 caracteres.' };
+  }
+  if (isDuplicateParticipantName(trimmed, existingNames)) {
+    return { valid: false, error: 'Ya existe un jugador con este nombre en la mesa.' };
   }
   return { valid: true };
 }
