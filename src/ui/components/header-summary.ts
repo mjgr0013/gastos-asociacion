@@ -3,12 +3,14 @@ import { Participant } from '../../domain/models';
 
 export interface HeaderSummaryOptions {
   onResetRequested: () => void;
+  onShareRequested?: () => void;
 }
 
 export class HeaderSummaryComponent {
   private element: HTMLElement;
   private totalValueElement: HTMLElement;
   private participantsCountElement: HTMLElement;
+  private shareButton: HTMLButtonElement;
   private options: HeaderSummaryOptions;
 
   constructor(options: HeaderSummaryOptions) {
@@ -34,6 +36,16 @@ export class HeaderSummaryComponent {
         <div class="header-actions">
           <button
             type="button"
+            class="btn btn-share-session"
+            id="btn-share-session"
+            title="Compartir cuenta por WhatsApp o portapapeles"
+            disabled
+          >
+            <span class="btn-icon">📤</span>
+            <span class="btn-text">Compartir</span>
+          </button>
+          <button
+            type="button"
             class="btn btn-outline-danger btn-reset-session"
             id="btn-reset-session"
             title="Reiniciar mesa y empezar una cuenta nueva"
@@ -47,6 +59,11 @@ export class HeaderSummaryComponent {
 
     this.totalValueElement = this.element.querySelector('#header-grand-total') as HTMLElement;
     this.participantsCountElement = this.element.querySelector('#header-participants-count') as HTMLElement;
+    this.shareButton = this.element.querySelector('#btn-share-session') as HTMLButtonElement;
+
+    this.shareButton.addEventListener('click', () => {
+      this.options.onShareRequested?.();
+    });
 
     const resetBtn = this.element.querySelector('#btn-reset-session');
     resetBtn?.addEventListener('click', () => {
@@ -61,6 +78,8 @@ export class HeaderSummaryComponent {
     const count = participants.length;
     this.participantsCountElement.textContent =
       count === 1 ? '1 jugador' : `${count} jugadores`;
+
+    this.shareButton.disabled = count === 0;
   }
 
   public getElement(): HTMLElement {

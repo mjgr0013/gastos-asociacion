@@ -1,11 +1,14 @@
 import { formatCurrency } from '../domain/calculations';
 import { ConsumptionItem, Participant, QuickCatalogPreset, SessionState } from '../domain/models';
+import { generateSessionShareText } from '../domain/sharing';
 import { SessionStore } from '../storage/store';
+import { shareOrCopyText } from '../utils/share';
 import { ConfirmDialogComponent } from './components/confirm-dialog';
 import { ConsumptionFormComponent, CustomConsumptionPayload } from './components/consumption-form';
 import { HeaderSummaryComponent } from './components/header-summary';
 import { ParticipantCardComponent } from './components/participant-card';
 import { ParticipantFormComponent } from './components/participant-form';
+import { ToastComponent } from './components/toast';
 
 export class AppView {
   private container: HTMLElement;
@@ -43,7 +46,8 @@ export class AppView {
 
     // Cabecera de resumen
     this.headerSummary = new HeaderSummaryComponent({
-      onResetRequested: () => this.handleResetSession()
+      onResetRequested: () => this.handleResetSession(),
+      onShareRequested: () => this.handleShareSession()
     });
     this.container.querySelector('#header-mount')?.appendChild(this.headerSummary.getElement());
 
@@ -199,6 +203,25 @@ export class AppView {
     if (confirmed) {
       this.collapsedParticipantIds.clear();
       this.store.resetSession();
+    }
+  }
+
+  private async handleShareSession(): Promise<void> {
+    const state = this.store.getState();
+    if (state.participants.length === 0) {
+      return;
+    }
+
+    const shareText = generateSessionShareText(state.participants);
+    const result = await shareOrCopyText({
+      title: 'Cuenta de la partida',
+      text: shareText
+    });
+
+    if (result === 'copied') {
+      ToastComponent.show('¡Resumen copiado al portapapeles!');
+    } else if (result === 'error') {
+      ToastComponent.show('No se pudo compartir ni copiar automáticamente.');
     }
   }
 }
