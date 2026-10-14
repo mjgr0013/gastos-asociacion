@@ -1,0 +1,41 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "BoardgameExpensesSessionStorageSchema",
+  "type": "object",
+  "required": ["version", "updatedAt", "participants"],
+  "properties": {
+    "version": {
+      "type": "integer",
+      "enum": [1]
+    },
+    "updatedAt": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "participants": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "name", "items", "createdAt"],
+        "properties": {
+          "id": { "type": "string", "minLength": 1 },
+          "name": { "type": "string", "minLength": 1, "maxLength": 50 },
+          "createdAt": { "type": "string", "format": "date-time" },
+          "items": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": ["id", "name", "unitPrice", "quantity"],
+              "properties": {
+                "id": { "type": "string", "minLength": 1 },
+                "name": { "type": "string", "minLength": 1, "maxLength": 80 },
+                "unitPrice": { "type": "number", "exclusiveMinimum": 0 },
+                "quantity": { "type": "integer", "minimum": 1 }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
