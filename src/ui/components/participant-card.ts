@@ -154,8 +154,8 @@ export class ParticipantCardComponent {
     return `
       <li class="consumption-item-row" data-item-id="${item.id}">
         <div class="item-info">
-          <span class="item-name">${escapeHtml(item.name)}</span>
-          <span class="item-unit-price">${formatCurrency(item.unitPrice)} /ud</span>
+          <span class="item-name" title="${escapeHtml(item.name)}">${escapeHtml(item.name)}</span>
+          <span class="item-unit-price">· ${formatCurrency(item.unitPrice)}</span>
         </div>
         <div class="item-controls">
           <div class="qty-counter">

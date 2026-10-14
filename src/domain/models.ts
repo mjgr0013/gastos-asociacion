@@ -20,6 +20,7 @@ export interface QuickCatalogPreset {
 }
 
 export const DEFAULT_CATALOG_PRESETS: ReadonlyArray<QuickCatalogPreset> = [
+  { id: 'preset-guest', name: 'Invitado', unitPrice: 3, icon: '🪪' },
   { id: 'preset-soda', name: 'Refresco', unitPrice: 1, icon: '🥤' },
   { id: 'preset-beer', name: 'Cerveza', unitPrice: 1, icon: '🍺' },
   { id: 'preset-snack', name: 'Snack', unitPrice: 1.20, icon: '🥨' },
