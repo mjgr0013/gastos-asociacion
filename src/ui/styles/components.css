@@ -766,3 +766,10 @@
   opacity: 1;
   transform: translateX(-50%) translateY(0);
 }
+
+@media (min-width: 1025px) {
+  .quick-catalog-chips {
+    height: auto;
+    overflow-y: visible;
+  }
+}
